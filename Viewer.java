@@ -16,10 +16,10 @@ public class Viewer {
             System.out.println("銘柄データが存在しません");
         }
 
-        String format = "| %-9s | %-20s | %-10s | %15s |\n";
-        System.out.println("|" + "=".repeat(65)+ "|");
-        System.out.printf(format,"Ticker","Product Name","Market","Shares Issued");
-        System.out.println("|" + "=".repeat(65)+ "|");
+        String format = "| %-8s | %-20s | %-10s | %15s |\n";
+        System.out.println("|" + "=".repeat(64)+ "|");
+        System.out.printf(format," Ticker ","Product Name","Market","Shares Issued");
+        System.out.println("|" + "=".repeat(64)+ "|");
 
         for (Stock stock: stocks) {
             String stockName = stock.getName();
@@ -27,7 +27,7 @@ public class Viewer {
                 stockName = stockName.substring(0,17) + "...";
             }
             System.out.printf(format,
-                    stock.getTicker(),
+                    " ".repeat(2) + stock.getTicker() + " ".repeat(2),
                     stockName,
                     stock.getMarket(),
                     String.format("%,d",stock.getSharesIssued()));
