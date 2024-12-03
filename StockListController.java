@@ -47,13 +47,24 @@ public class StockListController {
         }
         return stocks;
     }
-    public Stock addNewStock(){
+
+    public Stock addNewStock(List<Stock> stocks) {
         Scanner scanner = new Scanner(System.in);
         MarketManager marketManager = new MarketManager();
+        Validator validator = new Validator();
 
         System.out.print("銘柄名> ");
         String name = scanner.nextLine();
 
+        String confirmedTicker;
+        while (true) {
+            System.out.print("銘柄コード> ");
+            String inputTicker = scanner.nextLine();
+            if (validator.validateTicker(stocks, inputTicker)) {
+                confirmedTicker = inputTicker;
+                break;
+            }
+        }
         System.out.print("銘柄コード> ");
         String ticker = scanner.nextLine();
 

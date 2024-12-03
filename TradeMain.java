@@ -29,7 +29,7 @@ public class TradeMain {
                 case "2" -> {
                     System.out.println("銘柄マスタ新規登録");
                     List<Stock> stocks = stockListController.readStocksFromCSV();
-                    Stock newStock = stockListController.addNewStock();
+                    Stock newStock = stockListController.addNewStock(stocks);
                 }
                 default -> System.out.println("\"" + selectedMenu + "\"に対応するメニューは存在しません。\n");
             }
