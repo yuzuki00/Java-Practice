@@ -13,7 +13,7 @@ public class StockListController {
         List<Stock> stocks = new ArrayList<>();
         MarketManager marketManager = new MarketManager();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("src/simplex/StockData.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("StockData.csv"))) {
             String line;
             boolean isFirstLine = true;
 
