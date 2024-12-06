@@ -17,6 +17,11 @@ public class Validator {
             return false;
         }
 
+        if (!inputTicker.matches("[0-9][ACDF-HJ-NPR-UW-Y0-9][0-9][ACDF-HJ-NPR-UW-Y0-9]")) {
+            System.out.println("銘柄コードの入力規則に反しています");
+            return false;
+        }
+
 
 
         return true;
