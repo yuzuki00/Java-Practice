@@ -65,8 +65,6 @@ public class StockListController {
                 break;
             }
         }
-        System.out.print("銘柄コード> ");
-        String ticker = scanner.nextLine();
 
         System.out.print("上場市場> ");
         Market market = marketManager.parseStringToMarket(scanner.nextLine().toUpperCase());
@@ -74,7 +72,7 @@ public class StockListController {
         System.out.print("発行済み株式数> ");
         long sharesIssued = Long.parseLong(scanner.nextLine());
 
-        return new Stock(name, ticker, market, sharesIssued);
+        return new Stock(name, confirmedTicker, market, sharesIssued);
 
     }
 }

@@ -12,6 +12,13 @@ public class Validator {
             }
         }
 
+        if (inputTicker.length() != 4) {
+            System.out.println("銘柄コードは4桁で入力してください");
+            return false;
+        }
+
+
+
         return true;
     }
 }
