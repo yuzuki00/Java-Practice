@@ -12,27 +12,28 @@ public class Viewer {
     }
 
     public void displayStockList(List<Stock> stocks) {
+        MarketManager marketManager = new MarketManager();
         if (stocks.isEmpty()) {
             System.out.println("銘柄データが存在しません");
         }
 
         String format = "| %-8s | %-20s | %-10s | %15s |\n";
-        System.out.println("|" + "=".repeat(64)+ "|");
-        System.out.printf(format," Ticker ","Product Name","Market","Shares Issued");
-        System.out.println("|" + "=".repeat(64)+ "|");
+        System.out.println("|" + "=".repeat(64) + "|");
+        System.out.printf(format, " Ticker ", "Product Name", "Market", "Shares Issued");
+        System.out.println("|" + "=".repeat(64) + "|");
 
-        for (Stock stock: stocks) {
+        for (Stock stock : stocks) {
             String stockName = stock.getName();
-            if (stockName.length()>20) {
-                stockName = stockName.substring(0,17) + "...";
+            if (stockName.length() > 20) {
+                stockName = stockName.substring(0, 17) + "...";
             }
             System.out.printf(format,
                     " ".repeat(2) + stock.getTicker() + " ".repeat(2),
                     stockName,
-                    stock.getMarket(),
-                    String.format("%,d",stock.getSharesIssued()));
+                    marketManager.parseMarket(stock.getMarket()),
+                    String.format("%,d", stock.getSharesIssued()));
         }
-        System.out.println("|" + "=".repeat(65)+ "|");
+        System.out.println("|" + "=".repeat(64) + "|");
     }
 }
 

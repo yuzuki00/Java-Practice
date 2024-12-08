@@ -53,8 +53,15 @@ public class StockListController {
         MarketManager marketManager = new MarketManager();
         Validator validator = new Validator();
 
-        System.out.print("銘柄名> ");
-        String name = scanner.nextLine();
+        String confirmedName;
+        while (true) {
+            System.out.print("銘柄名> ");
+            String inputName = scanner.nextLine();
+            if (validator.validName(inputName)) {
+                confirmedName = inputName;
+                break;
+            }
+        }
 
         String confirmedTicker;
         while (true) {
@@ -86,7 +93,8 @@ public class StockListController {
             }
         }
 
-        return new Stock(name, confirmedTicker, confirmedMarket, confirmedSharesIssued);
+        System.out.println(confirmedName + "を新規銘柄として登録しました");
+        return new Stock(confirmedTicker, confirmedName, confirmedMarket, confirmedSharesIssued);
 
     }
 }

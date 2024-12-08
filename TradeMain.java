@@ -6,7 +6,9 @@ import java.util.List;
 public class TradeMain {
     public static void main(String[] args) {
         Application application = new Application();
+        Viewer viewer = new Viewer();
         StockListController stockListController = new StockListController();
+        CSVFileController csvFileController = new CSVFileController();
         System.out.println("株式取引管理システムを開始します。");
         while (true) {
             String selectedMenu = application.selectMenu();
@@ -18,7 +20,6 @@ public class TradeMain {
             switch (selectedMenu) {
                 case "1" -> {
                     System.out.println("銘柄マスタを表示します");
-                    Viewer viewer = new Viewer();
 
                     List<Stock> stocks = stockListController.readStocksFromCSV();
                     viewer.displayStockList(stocks);
@@ -30,6 +31,8 @@ public class TradeMain {
                     System.out.println("銘柄マスタ新規登録");
                     List<Stock> stocks = stockListController.readStocksFromCSV();
                     Stock newStock = stockListController.addNewStock(stocks);
+                    csvFileController.addStockToCSV(newStock);
+                    System.out.println();
                 }
                 default -> System.out.println("\"" + selectedMenu + "\"に対応するメニューは存在しません。\n");
             }

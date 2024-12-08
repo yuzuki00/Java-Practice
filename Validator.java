@@ -3,6 +3,13 @@ package practice1;
 import java.util.List;
 
 public class Validator {
+    public boolean validName(String inputName) {
+        if (!inputName.matches(".[a-zA-Z0-9 .()]{1,}")) {
+            System.out.println("入力規則に反しています");
+            return false;
+        }
+        return true;
+    }
     public boolean validateTicker(List<Stock> stocks, String inputTicker) {
         for (Stock stock : stocks) {
             String existTicker = stock.getTicker();
@@ -28,7 +35,7 @@ public class Validator {
         String uppercaseMarket = inputMarket.toUpperCase();
         String[] validMarket = {"PRIME", "STANDARD", "GROWTH"};
 
-        for (String s: validMarket) {
+        for (String s : validMarket) {
             if (uppercaseMarket.equals(s)) {
                 return true;
             }
@@ -38,8 +45,8 @@ public class Validator {
 
     }
 
-    public boolean validSharesIssued (String input) {
-        long inputSharesIssued = 0;
+    public boolean validSharesIssued(String input) {
+        long inputSharesIssued;
         try {
             inputSharesIssued = Long.parseLong(input);
         } catch (NumberFormatException e) {
@@ -51,7 +58,7 @@ public class Validator {
             System.out.println("1以上の数値を入力してください");
         }
 
-        if (!(inputSharesIssued < Math.pow(10,13)) ) {
+        if (!(inputSharesIssued < Math.pow(10, 13))) {
             System.out.println("12桁以下の数値を入力してください");
             return false;
         }
