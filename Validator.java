@@ -1,5 +1,8 @@
 package practice1;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class Validator {
@@ -10,6 +13,7 @@ public class Validator {
         }
         return true;
     }
+
     public boolean validateTicker(List<Stock> stocks, String inputTicker) {
         for (Stock stock : stocks) {
             String existTicker = stock.getTicker();
@@ -60,6 +64,48 @@ public class Validator {
 
         if (!(inputSharesIssued < Math.pow(10, 13))) {
             System.out.println("12桁以下の数値を入力してください");
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean validQuantity(String inputQuantity) {
+        int quantity;
+        try {
+            quantity = Integer.parseInt(inputQuantity);
+        } catch (NumberFormatException e) {
+            System.out.println("数値を入力してください");
+            return false;
+        }
+
+        if (quantity <= 0) {
+            System.out.println("1以上の数値を入力してください");
+            return false;
+        }
+
+        if (!(quantity % 100 == 0)) {
+            System.out.println("取引数量は100株単位で入力してください");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validTradeDateTime(LocalDateTime tradeDateTime) {
+        if (tradeDateTime.isAfter(LocalDateTime.now())) {
+            System.out.println("過去の日時を入力してください");
+            return false;
+        }
+
+        DayOfWeek dayOfWeek = tradeDateTime.getDayOfWeek();
+        if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+            System.out.println("取引日時は平日である必要があります");
+            return false;
+        }
+
+        LocalTime tradeTime = tradeDateTime.toLocalTime();
+        if (tradeTime.isBefore(LocalTime.of(9, 0)) || tradeTime.isAfter(LocalTime.of(15, 30))) {
+            System.out.println("取引日時は9:00~15:30の間である必要があります");
             return false;
         }
 
