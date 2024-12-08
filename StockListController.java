@@ -66,13 +66,27 @@ public class StockListController {
             }
         }
 
-        System.out.print("上場市場> ");
-        Market market = marketManager.parseStringToMarket(scanner.nextLine().toUpperCase());
+        Market confirmedMarket;
+        while (true) {
+            System.out.print("上場市場(Prime,Standard,Growth)> ");
+            String inputMarket = scanner.nextLine();
+            if (validator.validMarket(inputMarket)) {
+                confirmedMarket = marketManager.parseStringToMarket((inputMarket.toUpperCase()));
+                break;
+            }
+        }
 
-        System.out.print("発行済み株式数> ");
-        long sharesIssued = Long.parseLong(scanner.nextLine());
+        long confirmedSharesIssued;
+        while (true) {
+            System.out.print("発行済み株式数> ");
+            String input = scanner.nextLine();
+            if (validator.validSharesIssued(input)) {
+                confirmedSharesIssued = Long.parseLong(input);
+                break;
+            }
+        }
 
-        return new Stock(name, confirmedTicker, market, sharesIssued);
+        return new Stock(name, confirmedTicker, confirmedMarket, confirmedSharesIssued);
 
     }
 }
