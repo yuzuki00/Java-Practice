@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.time.format.DateTimeFormatter;
 
 public class CSVFileController {
     public void addStockToCSV(Stock newStock) {
@@ -21,6 +22,24 @@ public class CSVFileController {
             System.out.println("ファイルが見つかりません");
         } catch (IOException e) {
             System.out.println("データが読み込めません");
+        }
+
+    }
+    public void addTradeToCSV(Trade newTrade) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("TradeData.csv", true));
+            writer.newLine();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+            writer.append(String.format("%s,%s,%s,%s,%s,%s",
+                    dateTimeFormatter.format(newTrade.getTradedDateTime()),
+                    newTrade.getName(),
+                    newTrade.getSide(),
+                    newTrade.getQuantity(),
+                    newTrade.getTradedUnitPrice(),
+                    dateTimeFormatter.format(newTrade.getInputDateTime())));
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("error");
         }
 
     }

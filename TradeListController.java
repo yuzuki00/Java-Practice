@@ -1,6 +1,7 @@
 package practice1;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -10,12 +11,11 @@ public class TradeListController {
     public Trade addNewTrade(List<Stock> stocks) {
         Scanner scanner = new Scanner(System.in);
         Validator validator = new Validator();
-        boolean step = true;
 
         LocalDateTime confirmedTradeDateTime;
         while (true) {
             try {
-                System.out.print("取引日時(yyyy/MM/dd HH:mm> ");
+                System.out.print("取引日時(yyyy/MM/dd HH:mm)> ");
                 LocalDateTime tradeDateTime = LocalDateTime.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
                 if (validator.validTradeDateTime(tradeDateTime)) {
                     confirmedTradeDateTime = tradeDateTime;
@@ -26,17 +26,17 @@ public class TradeListController {
             }
         }
 
-        String confirmedName;
+        String confirmedName ;
         String confirmedTicker;
-        while (step) {
+        label:
+        while (true) {
             System.out.print("銘柄コード> ");
             String inputTicker = scanner.nextLine();
             for (Stock stock : stocks) {
                 if (inputTicker.equals(stock.getTicker())) {
                     confirmedName = stock.getName();
                     confirmedTicker = inputTicker;
-                    step = false;
-                    break;
+                    break label;
                 }
             }
             System.out.println("入力された銘柄コードが存在していません");
@@ -64,10 +64,24 @@ public class TradeListController {
         }
 
         BigDecimal tradeUnitPrice;
-        while (true){
-            break;
+        while (true) {
+            System.out.print("取引単価> ");
+            String inputTradeUnitPrice = scanner.nextLine();
+            if (validator.validTradeUnitPrice(inputTradeUnitPrice)) {
+                DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                decimalFormat.setMinimumFractionDigits(2);
+                decimalFormat.setMaximumFractionDigits(2);
+                tradeUnitPrice = new BigDecimal(decimalFormat.format(Double.parseDouble(inputTradeUnitPrice)));
+                break;
+            }
         }
 
-        return null;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+        LocalDateTime inputDateTime = LocalDateTime.now();
+        String stringOfInputDateTime = dateTimeFormatter.format(LocalDateTime.now());
+
+        Trade newTrade = new Trade(confirmedTradeDateTime, confirmedName, side, confirmedQuantity, tradeUnitPrice, inputDateTime);
+
+        return newTrade;
     }
 }

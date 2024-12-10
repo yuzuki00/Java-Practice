@@ -8,6 +8,7 @@ public class TradeMain {
         Application application = new Application();
         Viewer viewer = new Viewer();
         StockListController stockListController = new StockListController();
+        TradeListController tradeListController = new TradeListController();
         CSVFileController csvFileController = new CSVFileController();
         System.out.println("株式取引管理システムを開始します。");
         while (true) {
@@ -32,6 +33,13 @@ public class TradeMain {
                     List<Stock> stocks = stockListController.readStocksFromCSV();
                     Stock newStock = stockListController.addNewStock(stocks);
                     csvFileController.addStockToCSV(newStock);
+                    System.out.println();
+                }
+                case "3" -> {
+                    System.out.println("新規取引入力");
+                    List<Stock> stocks = stockListController.readStocksFromCSV();
+                    Trade newTrade = tradeListController.addNewTrade(stocks);
+                    csvFileController.addTradeToCSV(newTrade);
                     System.out.println();
                 }
                 default -> System.out.println("\"" + selectedMenu + "\"に対応するメニューは存在しません。\n");

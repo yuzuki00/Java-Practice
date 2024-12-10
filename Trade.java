@@ -11,12 +11,12 @@ public class Trade {
     private BigDecimal tradedUnitPrice;
     private LocalDateTime inputDateTime;
 
-    public Trade(LocalDateTime tradedDateTime, String name, String side, int quantity, double tradedUnitPrice, LocalDateTime inputDateTime) {
+    public Trade(LocalDateTime tradedDateTime, String name, String side, int quantity, BigDecimal tradedUnitPrice, LocalDateTime inputDateTime) {
         this.tradedDateTime = tradedDateTime;
         this.name = name;
         this.side = side;
         this.quantity = quantity;
-        this.tradedUnitPrice = BigDecimal.valueOf(tradedUnitPrice);
+        this.tradedUnitPrice = tradedUnitPrice;
         this.inputDateTime = inputDateTime;
     }
 

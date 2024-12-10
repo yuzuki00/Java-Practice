@@ -1,5 +1,6 @@
 package practice1;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -108,6 +109,32 @@ public class Validator {
             System.out.println("取引日時は9:00~15:30の間である必要があります");
             return false;
         }
+
+        return true;
+    }
+
+    public boolean validTradeUnitPrice(String tradeUnitPrice) {
+        try {
+            BigDecimal validTradeUnitPrice = new BigDecimal(tradeUnitPrice);
+            String[] input = tradeUnitPrice.split("\\.");
+
+            if (input.length != 1 && input[1].length() > 2) {
+                System.out.println("小数点2桁以内で入力してください");
+                return false;
+            }
+
+            if (validTradeUnitPrice.compareTo(BigDecimal.ZERO) < 0) {
+                System.out.println("正の数値を入力してください");
+                return false;
+            } else if (validTradeUnitPrice.compareTo(BigDecimal.ZERO) == 0) {
+                System.out.println("0以外の数値を入力してください");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("数値を入力してください");
+            return false;
+        }
+
 
         return true;
     }
