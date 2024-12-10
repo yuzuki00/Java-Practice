@@ -1,9 +1,14 @@
 package practice1;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,7 +31,7 @@ public class TradeListController {
             }
         }
 
-        String confirmedName ;
+        String confirmedName;
         String confirmedTicker;
         label:
         while (true) {
@@ -83,5 +88,47 @@ public class TradeListController {
         Trade newTrade = new Trade(confirmedTradeDateTime, confirmedName, side, confirmedQuantity, tradeUnitPrice, inputDateTime);
 
         return newTrade;
+    }
+
+    public List<Trade> readTradeFromCSV() {
+        List<Trade> trades = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("TradeData.csv"));
+            String line;
+            boolean firstLine = true;
+
+            while ((line = reader.readLine()) != null) {
+                if (firstLine) {
+                    firstLine = false;
+                    continue;
+                }
+
+                String[] values = line.split(",");
+
+                if (values.length != 6) {
+                    System.out.println("不正な行がありました。1行スキップします");
+                    continue;
+                }
+
+                try {
+                    BigDecimal tradeUnitPrice = new BigDecimal(values[4]);
+                    Trade trade = new Trade(LocalDateTime.parse(values[0], DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")),
+                            values[1],
+                            values[2],
+                            Integer.parseInt(values[3]),
+                            tradeUnitPrice,
+                            LocalDateTime.parse(values[5], DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
+                    );
+                    trades.add(trade);
+                } catch (NumberFormatException e) {
+                    System.out.println("数値フォーマットエラーがありました");
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("ファイルが見つかりません");
+        } catch (IOException e) {
+            System.out.println("error");
+        }
+        return trades;
     }
 }

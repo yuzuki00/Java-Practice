@@ -42,6 +42,12 @@ public class TradeMain {
                     csvFileController.addTradeToCSV(newTrade);
                     System.out.println();
                 }
+                case "4" -> {
+                    System.out.println("取引一覧表示");
+                    List<Trade> trades = tradeListController.readTradeFromCSV();
+                    viewer.displayTradeList(trades);
+                    System.out.println();
+                }
                 default -> System.out.println("\"" + selectedMenu + "\"に対応するメニューは存在しません。\n");
             }
         }
