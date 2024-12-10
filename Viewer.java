@@ -1,8 +1,7 @@
 package practice1;
 
-import com.sun.security.jgss.GSSUtil;
-
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 public class Viewer {
@@ -45,6 +44,10 @@ public class Viewer {
         if (trades.isEmpty()) {
             System.out.println("データが存在しません");
         } else {
+            trades.sort(Comparator.
+                    comparing(Trade::getTradedDateTime).reversed().
+                    thenComparing(Trade::getName));
+
             String format = "| %-18s | %-20s | %-5s | %15s | %18s | %-18s | \n";
             System.out.println("|" + "=".repeat(111) + "|");
             System.out.printf(format, "Trade DateTime", "Product Name", "Side", "Quantity", "Trade Unit Price", "Input DateTime");
