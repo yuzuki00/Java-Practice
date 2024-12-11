@@ -2,6 +2,7 @@ package practice1;
 
 
 import java.util.List;
+import java.util.Map;
 
 public class TradeMain {
     public static void main(String[] args) {
@@ -10,6 +11,7 @@ public class TradeMain {
         StockListController stockListController = new StockListController();
         TradeListController tradeListController = new TradeListController();
         CSVFileController csvFileController = new CSVFileController();
+        PositionManger positionManger = new PositionManger();
         System.out.println("株式取引管理システムを開始します。");
         while (true) {
             String selectedMenu = application.selectMenu();
@@ -46,6 +48,14 @@ public class TradeMain {
                     System.out.println("取引一覧表示");
                     List<Trade> trades = tradeListController.readTradeFromCSV();
                     viewer.displayTradeList(trades);
+                    System.out.println();
+                }
+                case "5" -> {
+                    System.out.println("ポジション");
+                    List<Stock> stocks = stockListController.readStocksFromCSV();
+                    List<Trade> trades = tradeListController.readTradeFromCSV();
+                    Map<String, Integer> positions = positionManger.managePosition(trades, stocks);
+                    viewer.displayPositionList(positions,stocks);
                     System.out.println();
                 }
                 default -> System.out.println("\"" + selectedMenu + "\"に対応するメニューは存在しません。\n");
