@@ -10,26 +10,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class TradeListController {
-    public Trade addNewTrade(List<Stock> stocks) {
+    public Trade addNewTrade(List<Stock> stocks,List<Trade> existTrades, Map<String, Integer> existPositions) {
         Scanner scanner = new Scanner(System.in);
         Validator validator = new Validator();
 
-        LocalDateTime confirmedTradeDateTime;
-        while (true) {
-            try {
-                System.out.print("取引日時(yyyy/MM/dd HH:mm)> ");
-                LocalDateTime tradeDateTime = LocalDateTime.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
-                if (validator.validTradeDateTime(tradeDateTime)) {
-                    confirmedTradeDateTime = tradeDateTime;
-                    break;
-                }
-            } catch (Exception e) {
-                System.out.println("書式エラー");
-            }
-        }
 
         String confirmedName;
         String confirmedTicker;
@@ -47,14 +35,13 @@ public class TradeListController {
             System.out.println("入力された銘柄コードが存在していません");
         }
 
-        String side;
+        String confirmedSide;
         while (true) {
             System.out.print("売買区分> ");
-            side = scanner.nextLine().toUpperCase();
-            if (side.equals("BUY") || side.equals("SELL")) {
+            String inputSide = scanner.nextLine().toUpperCase();
+            if (validator.validSide(confirmedTicker,inputSide,existPositions)) {
+                confirmedSide = inputSide;
                 break;
-            } else {
-                System.out.println("売買区分はBUYもしくはSELLを入力して下さい");
             }
         }
 
@@ -62,7 +49,7 @@ public class TradeListController {
         while (true) {
             System.out.print("数量> ");
             String quantity = scanner.nextLine();
-            if (validator.validQuantity(quantity)) {
+            if (validator.validQuantity(confirmedTicker, quantity, confirmedSide, existPositions)) {
                 confirmedQuantity = Integer.parseInt(quantity);
                 break;
             }
@@ -81,11 +68,25 @@ public class TradeListController {
             }
         }
 
+        LocalDateTime confirmedTradeDateTime;
+        while (true) {
+            try {
+                System.out.print("取引日時(yyyy/MM/dd HH:mm)> ");
+                LocalDateTime tradeDateTime = LocalDateTime.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+                if (validator.validTradeDateTime(tradeDateTime,confirmedName,existTrades)) {
+                    confirmedTradeDateTime = tradeDateTime;
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println("書式エラー");
+            }
+        }
+
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
         LocalDateTime inputDateTime = LocalDateTime.now();
         String stringOfInputDateTime = dateTimeFormatter.format(LocalDateTime.now());
 
-        Trade newTrade = new Trade(confirmedTradeDateTime, confirmedName, side, confirmedQuantity, tradeUnitPrice, inputDateTime);
+        Trade newTrade = new Trade(confirmedTradeDateTime, confirmedName, confirmedSide, confirmedQuantity, tradeUnitPrice, inputDateTime);
 
         return newTrade;
     }

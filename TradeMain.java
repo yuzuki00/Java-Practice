@@ -11,7 +11,7 @@ public class TradeMain {
         StockListController stockListController = new StockListController();
         TradeListController tradeListController = new TradeListController();
         CSVFileController csvFileController = new CSVFileController();
-        PositionManger positionManger = new PositionManger();
+        PositionController positionManger = new PositionController();
         System.out.println("株式取引管理システムを開始します。");
         while (true) {
             String selectedMenu = application.selectMenu();
@@ -40,7 +40,9 @@ public class TradeMain {
                 case "3" -> {
                     System.out.println("新規取引入力");
                     List<Stock> stocks = stockListController.readStocksFromCSV();
-                    Trade newTrade = tradeListController.addNewTrade(stocks);
+                    List<Trade> existTrades = tradeListController.readTradeFromCSV();
+                    Map<String, Integer> existPositions = positionManger.managePosition(existTrades,stocks);
+                    Trade newTrade = tradeListController.addNewTrade(stocks,existTrades, existPositions);
                     csvFileController.addTradeToCSV(newTrade);
                     System.out.println();
                 }

@@ -4,11 +4,13 @@ import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Validator {
     public boolean validName(String inputName) {
-        if (!inputName.matches(".[a-zA-Z0-9 .()]{1,}")) {
+        if (!inputName.matches(".[a-zA-Z0-9 .()]+")) {
             System.out.println("入力規則に反しています");
             return false;
         }
@@ -71,7 +73,24 @@ public class Validator {
         return true;
     }
 
-    public boolean validQuantity(String inputQuantity) {
+    public boolean validSide(String ticker, String side, Map<String, Integer> positions) {
+        if (!side.equals("BUY") && !side.equals("SELL")) {
+            System.out.println("売買区分はBUYもしくはSELLを入力して下さい");
+            return false;
+        }
+
+        if (side.equals("SELL")) {
+            if (positions.get(ticker) == 0) {
+                System.out.println("保有していないため取引できません");
+                return false;
+            }
+            return true;
+        }
+
+        return true;
+    }
+
+    public boolean validQuantity(String ticker, String inputQuantity, String side, Map<String, Integer> positions) {
         int quantity;
         try {
             quantity = Integer.parseInt(inputQuantity);
@@ -89,10 +108,16 @@ public class Validator {
             System.out.println("取引数量は100株単位で入力してください");
             return false;
         }
+
+        //保有ポジション情報を用いた取引の制限
+        if ((positions.get(ticker) + (side.equals("BUY") ? Integer.parseInt(inputQuantity) : -Integer.parseInt(inputQuantity))) < 0) {
+            System.out.println("保有数量が負の値となるため、不正な取引です");
+            return false;
+        }
         return true;
     }
 
-    public boolean validTradeDateTime(LocalDateTime tradeDateTime) {
+    public boolean validTradeDateTime(LocalDateTime tradeDateTime, String name, List<Trade> trades) {
         if (tradeDateTime.isAfter(LocalDateTime.now())) {
             System.out.println("過去の日時を入力してください");
             return false;
@@ -109,6 +134,14 @@ public class Validator {
             System.out.println("取引日時は9:00~15:30の間である必要があります");
             return false;
         }
+
+        Map<String, LocalDateTime> tradeLog = new HashMap<>();
+        for (Trade trade : trades) {
+            tradeLog.put(trade.getName(), trade.getTradedDateTime());
+        }
+
+
+
 
         return true;
     }
