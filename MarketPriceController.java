@@ -37,7 +37,7 @@ public class MarketPriceController {
         }catch (FileNotFoundException e) {
             System.out.println("ファイルが見つかりません");
         } catch (IOException e) {
-            System.out.println("エラー");;
+            System.out.println("エラー");
         }
     }
 }

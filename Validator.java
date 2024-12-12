@@ -135,12 +135,35 @@ public class Validator {
             return false;
         }
 
-        Map<String, LocalDateTime> tradeLog = new HashMap<>();
+//        Map<String, LocalDateTime> latestTradeLog = new HashMap<>();
+//        for (Trade trade : trades) {
+//            if (latestTradeLog.get(name) != null) {
+//                if (trade.getTradedDateTime().isAfter(latestTradeLog.get(name))) {
+//                    latestTradeLog.put(name, trade.getTradedDateTime());
+//                }
+//            }else {
+//                latestTradeLog.put(name,latestTradeLog.get(name));
+//            }
+//        }
+//
+//        if (!tradeDateTime.isAfter(latestTradeLog.get(name))) {
+//            System.out.println("既に登録されている同一銘柄の取引の最新の取引時間と同じ、もしくはそれよりも過去です。");
+//            return false;
+//        }
+
+        LocalDateTime latestTradeTime = null;
         for (Trade trade : trades) {
-            tradeLog.put(trade.getName(), trade.getTradedDateTime());
+            if (trade.getName().equals(name)) {
+                if (latestTradeTime == null || trade.getTradedDateTime().isAfter(latestTradeTime)) {
+                    latestTradeTime = trade.getTradedDateTime();
+                }
+            }
         }
 
-
+        if (latestTradeTime != null && !tradeDateTime.isAfter(latestTradeTime)) {
+            System.out.println("既に登録されている同一銘柄の取引の最新の取引時間と同じ、もしくはそれよりも過去です。");
+            return false;
+        }
 
 
         return true;
