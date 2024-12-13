@@ -32,11 +32,7 @@ public class PositionController {
     public Map<String, BigDecimal> calculateAverageUnitPrice(List<Trade> trades, List<Stock> stocks) {
 
         //銘柄コードごとに取引データをグルーピング
-        Map<String, List<Trade>> sortedTradeByTicker = new HashMap<>();
-        for (Trade trade : trades) {
-            String ticker = linkTickerAndName(trade.getName(), stocks);
-            sortedTradeByTicker.computeIfAbsent(ticker, k -> new ArrayList<>()).add(trade);
-        }
+        Map<String, List<Trade>> sortedTradeByTicker = groupingTradeByTicker(trades, stocks);
 
         Map<String, BigDecimal> tickerAndAveragePrice = new HashMap<>();
 
@@ -60,6 +56,33 @@ public class PositionController {
         return tickerAndAveragePrice;
     }
 
+    //損益額を計算し、銘柄コードと組み合わせて出力するメソッド
+    public Map<String, BigDecimal> calculateRealizedProfitAndLoss(List<Trade> trades, List<Stock> stocks) {
+        Map<String, List<Trade>> groupedTradeByTicker = groupingTradeByTicker(trades, stocks);
+        Map<String, BigDecimal> tickerAndRealizedProfitAndLoss = new HashMap<>();
+
+        for (String ticker:groupedTradeByTicker.keySet()) {
+            List<Trade> tickerWithTradeData = groupedTradeByTicker.get(ticker);
+
+            for (Trade trade:tickerWithTradeData) {
+                int quantity = trade.getSide().equals("BUY") ? trade.getQuantity():-trade.getQuantity();
+                BigDecimal realizedProfitAndLoss = trade.getTradedUnitPrice().multiply(new BigDecimal(quantity));
+
+                tickerAndRealizedProfitAndLoss.put(ticker,tickerAndRealizedProfitAndLoss.getOrDefault(ticker, BigDecimal.ZERO).add(realizedProfitAndLoss));
+            }
+        }
+        return tickerAndRealizedProfitAndLoss;
+    }
+
+    //銘柄コードごとに取引データをグルーピングするprivateメソッド
+    private Map<String, List<Trade>> groupingTradeByTicker (List<Trade> trades, List<Stock> stocks) {
+        Map<String, List<Trade>> sortedTradeByTicker = new HashMap<>();
+        for (Trade trade : trades) {
+            String ticker = linkTickerAndName(trade.getName(), stocks);
+            sortedTradeByTicker.computeIfAbsent(ticker, k -> new ArrayList<>()).add(trade);
+        }
+        return sortedTradeByTicker;
+    }
 
     //銘柄名と銘柄コードを紐づけるメソッド
     private String linkTickerAndName(String name, List<Stock> stocks) {
