@@ -32,7 +32,6 @@ public class MarketPriceController {
                 String ticker = values[0];
                 BigDecimal marketPrice = new BigDecimal(values[1]);
                 marketPriceData.put(ticker, marketPrice);
-
             }
         }catch (FileNotFoundException e) {
             System.out.println("ファイルが見つかりません");

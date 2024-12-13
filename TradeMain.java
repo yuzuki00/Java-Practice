@@ -53,7 +53,7 @@ public class TradeMain {
                     System.out.println();
                 }
                 case "5" -> {
-                    System.out.println("ポジション");
+                    System.out.println("保有ポジション表示");
                     List<Stock> stocks = stockListController.readStocksFromCSV();
                     List<Trade> trades = tradeListController.readTradeFromCSV();
                     Map<String, Integer> positions = positionManger.managePosition(trades, stocks);
