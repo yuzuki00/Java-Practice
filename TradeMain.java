@@ -41,7 +41,7 @@ public class TradeMain {
                     System.out.println("新規取引入力");
                     List<Stock> stocks = stockListController.readStocksFromCSV();
                     List<Trade> existTrades = tradeListController.readTradeFromCSV();
-                    Map<String, Integer> existPositions = positionManger.managePosition(existTrades,stocks);
+                    Map<String, Integer> existPositions = positionManger.calculateOwnPosition(existTrades,stocks);
                     Trade newTrade = tradeListController.addNewTrade(stocks,existTrades, existPositions);
                     csvFileController.addTradeToCSV(newTrade);
                     System.out.println();
@@ -56,7 +56,7 @@ public class TradeMain {
                     System.out.println("保有ポジション表示");
                     List<Stock> stocks = stockListController.readStocksFromCSV();
                     List<Trade> trades = tradeListController.readTradeFromCSV();
-                    Map<String, Integer> positions = positionManger.managePosition(trades, stocks);
+                    Map<String, Integer> positions = positionManger.calculateOwnPosition(trades, stocks);
                     viewer.displayPositionList(positions,stocks);
                     System.out.println();
                 }

@@ -1,5 +1,6 @@
 package practice1;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
@@ -105,6 +106,20 @@ public class Viewer {
 
             System.out.printf("%-10s %-20s %10s%n", ticker, stockName, formattedQuantity);
         }
+    }
+
+    public void displayPositionData(List<Trade> trades, List<Stock> stocks,List<Position> positions) {
+        PositionController positionController = new PositionController();
+        Map<String, Integer> ownPositionData = positionController.calculateOwnPosition(trades, stocks);
+        Map<String, BigDecimal> averageUnitPriceData = positionController.calculateAverageUnitPrice(trades, stocks);
+        Map<String,BigDecimal> realizeProfitAndLoss = positionController.calculateRealizedProfitAndLoss(trades,stocks);
+        Map<String,BigDecimal> valuationData = positionController.calculateValuation(trades, stocks);
+        Map<String, BigDecimal> unrealizedProfitAndLoss = positionController.calculateUnrealizedProfitAndLoss(trades, stocks);
+
+        if (positions.isEmpty()) {
+            System.out.println("データが存在しません");
+        }
+
     }
 }
 

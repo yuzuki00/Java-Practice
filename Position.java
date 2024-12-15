@@ -3,11 +3,25 @@ package practice1;
 import java.math.BigDecimal;
 
 public class Position {
+    String ticker;
     int quantity;
     BigDecimal averageUnitPrice;
-    BigDecimal getUnrealizeProfitAndLoss;
+    BigDecimal realizeProfitAndLoss;
     BigDecimal valuation;
     BigDecimal unrealizeProfitAndLoss;
+
+    public Position(String ticker, int quantity, BigDecimal averageUnitPrice, BigDecimal realizeProfitAndLoss, BigDecimal valuation, BigDecimal unrealizeProfitAndLoss) {
+        this.ticker = ticker;
+        this.quantity = quantity;
+        this.averageUnitPrice = averageUnitPrice;
+        this.realizeProfitAndLoss = realizeProfitAndLoss;
+        this.valuation = valuation;
+        this.unrealizeProfitAndLoss = unrealizeProfitAndLoss;
+    }
+
+    public String getTicker() {
+        return ticker;
+    }
 
     public int getQuantity() {
         return quantity;
@@ -17,8 +31,8 @@ public class Position {
         return averageUnitPrice;
     }
 
-    public BigDecimal getGetUnrealizeProfitAndLoss() {
-        return getUnrealizeProfitAndLoss;
+    public BigDecimal getRealizeProfitAndLoss() {
+        return realizeProfitAndLoss;
     }
 
     public BigDecimal getValuation() {
@@ -26,14 +40,6 @@ public class Position {
     }
 
     public BigDecimal getUnrealizeProfitAndLoss() {
-        return unrealizeProfitAndLoss;
-    }
-
-    public Position(int quantity, BigDecimal averageUnitPrice, BigDecimal getUnrealizeProfitAndLoss, BigDecimal valuation, BigDecimal unrealizeProfitAndLoss) {
-        this.quantity = quantity;
-        this.averageUnitPrice = averageUnitPrice;
-        this.getUnrealizeProfitAndLoss = getUnrealizeProfitAndLoss;
-        this.valuation = valuation;
-        this.unrealizeProfitAndLoss = unrealizeProfitAndLoss;
+        return realizeProfitAndLoss;
     }
 }

@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MarketPriceController {
-    public void readMarketPriceFromCSV() {
+    public Map<String, BigDecimal> readMarketPriceFromCSV() {
+        Map<String, BigDecimal> marketPriceData = new HashMap<>();
         try {
-            Map<String, BigDecimal> marketPriceData = new HashMap<>();
             BufferedReader reader = new BufferedReader(new FileReader("MarketPriceData.csv"));
             String line;
             boolean firstLine = true;
@@ -38,5 +38,6 @@ public class MarketPriceController {
         } catch (IOException e) {
             System.out.println("エラー");
         }
+        return marketPriceData;
     }
 }
