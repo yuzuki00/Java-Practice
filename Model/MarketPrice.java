@@ -1,4 +1,4 @@
-package practice1.Controller;
+package practice1.Model;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MarketPriceController {
+public class MarketPrice {
     public Map<String, BigDecimal> readMarketPriceFromCSV() {
         Map<String, BigDecimal> marketPriceData = new HashMap<>();
         try {

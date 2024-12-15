@@ -1,5 +1,6 @@
 package practice1.Controller;
 
+import practice1.Model.MarketPrice;
 import practice1.Model.Position;
 import practice1.Model.Stock;
 import practice1.Model.Trade;
@@ -97,7 +98,7 @@ public class PositionController {
 
     //評価額計算メソッド
     public Map<String, BigDecimal> calculateValuation(List<Trade> trades, List<Stock> stocks) {
-        MarketPriceController marketPriceController = new MarketPriceController();
+        MarketPrice marketPriceController = new MarketPrice();
         Map<String, BigDecimal> valuationData = new HashMap<>();
         Map<String, Integer> ownPostionMap = calculateOwnPosition(trades, stocks);
         Map<String, BigDecimal> marketPriceData = marketPriceController.readMarketPriceFromCSV();
