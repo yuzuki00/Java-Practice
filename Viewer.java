@@ -1,12 +1,10 @@
 package practice1;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 public class Viewer {
     public void displayMenu() {
@@ -79,34 +77,34 @@ public class Viewer {
         }
     }
 
-    public void displayPositionList(Map<String, Integer> positions, List<Stock> stocks) {
-        //銘柄コードでソート
-        List<String>  sortedTickers;
-        sortedTickers = positions.keySet().stream().sorted().toList();
-
-        System.out.printf("%-10s %-20s %10s%n", "銘柄コード", "銘柄名", "保有数量");
-        System.out.println("------------------------------------------------------");
-
-        // 保有ポジションを出力
-        for (String ticker : sortedTickers) {
-            String stockName = null;
-            //銘柄コードに応じた銘柄名の取得
-            for (Stock stock :stocks)
-                if (stock.getTicker().equals(ticker)) {
-                    stockName = stock.getName();
-                    if (stockName.length()>20) {
-                        stockName = stockName.substring(0,17) + "...";
-                    }
-                    break;
-                }
-
-            //保有数量の取得
-            int quantity = positions.get(ticker);
-            String formattedQuantity = NumberFormat.getNumberInstance().format(quantity);
-
-            System.out.printf("%-10s %-20s %10s%n", ticker, stockName, formattedQuantity);
-        }
-    }
+//    public void displayPositionList(Map<String, Integer> positions, List<Stock> stocks) {
+//        //銘柄コードでソート
+//        List<String>  sortedTickers;
+//        sortedTickers = positions.keySet().stream().sorted().toList();
+//
+//        System.out.printf("%-10s %-20s %10s%n", "銘柄コード", "銘柄名", "保有数量");
+//        System.out.println("------------------------------------------------------");
+//
+//        // 保有ポジションを出力
+//        for (String ticker : sortedTickers) {
+//            String stockName = null;
+//            //銘柄コードに応じた銘柄名の取得
+//            for (Stock stock :stocks)
+//                if (stock.getTicker().equals(ticker)) {
+//                    stockName = stock.getName();
+//                    if (stockName.length()>20) {
+//                        stockName = stockName.substring(0,17) + "...";
+//                    }
+//                    break;
+//                }
+//
+//            //保有数量の取得
+//            int quantity = positions.get(ticker);
+//            String formattedQuantity = NumberFormat.getNumberInstance().format(quantity);
+//
+//            System.out.printf("%-10s %-20s %10s%n", ticker, stockName, formattedQuantity);
+//        }
+//    }
 
     public void displayPositionData(List<Position> positions,List<Stock> stocks) {
         if (positions.isEmpty()) {
