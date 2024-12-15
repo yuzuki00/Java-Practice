@@ -2,7 +2,6 @@ package practice1;
 
 
 import practice1.Controller.*;
-import practice1.Viewer.Viewer;
 
 public class TradeMain {
     public static void main(String[] args) {
