@@ -87,7 +87,6 @@ public class TradeListController {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
         LocalDateTime inputDateTime = LocalDateTime.now();
-        String stringOfInputDateTime = dateTimeFormatter.format(LocalDateTime.now());
 
         Trade newTrade = new Trade(confirmedTradeDateTime, confirmedName, confirmedSide, confirmedQuantity, tradeUnitPrice, inputDateTime);
 

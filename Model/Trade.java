@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Trade {
-    private LocalDateTime tradedDateTime;
-    private String name;
-    private String side; //BUY or SELL
-    private int quantity;
-    private BigDecimal tradedUnitPrice;
-    private LocalDateTime inputDateTime;
+    private final LocalDateTime tradedDateTime;
+    private final String name;
+    private final String side; //BUY or SELL
+    private final int quantity;
+    private final BigDecimal tradedUnitPrice;
+    private final LocalDateTime inputDateTime;
 
     public Trade(LocalDateTime tradedDateTime, String name, String side, int quantity, BigDecimal tradedUnitPrice, LocalDateTime inputDateTime) {
         this.tradedDateTime = tradedDateTime;

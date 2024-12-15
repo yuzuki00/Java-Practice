@@ -1,10 +1,10 @@
 package practice1.Model;
 
 public class Stock {
-    private String ticker;
-    private String name;
-    private Market market;
-    private long sharesIssued;
+    private final String ticker;
+    private final String name;
+    private final Market market;
+    private final long sharesIssued;
 
     public Stock(String ticker, String name, Market market, long sharesIssued) {
         this.ticker = ticker;
