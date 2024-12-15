@@ -1,7 +1,5 @@
-package practice1;
+package practice1.Controller;
 
-
-import practice1.Controller.*;
 
 public class TradeMain {
     public static void main(String[] args) {
