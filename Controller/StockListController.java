@@ -1,4 +1,7 @@
-package practice1;
+package practice1.Controller;
+
+import practice1.Model.Market;
+import practice1.Model.Stock;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -13,7 +16,7 @@ public class StockListController {
         List<Stock> stocks = new ArrayList<>();
         MarketManager marketManager = new MarketManager();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("StockData.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("DataFile/StockData.csv"))) {
             String line;
             boolean isFirstLine = true;
 

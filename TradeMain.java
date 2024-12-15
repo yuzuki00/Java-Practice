@@ -1,6 +1,12 @@
 package practice1;
 
 
+import practice1.Controller.*;
+import practice1.Model.Position;
+import practice1.Model.Stock;
+import practice1.Model.Trade;
+import practice1.Viewer.Viewer;
+
 import java.util.List;
 import java.util.Map;
 

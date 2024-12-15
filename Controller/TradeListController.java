@@ -1,4 +1,7 @@
-package practice1;
+package practice1.Controller;
+
+import practice1.Model.Stock;
+import practice1.Model.Trade;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -14,7 +17,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class TradeListController {
-    public Trade addNewTrade(List<Stock> stocks,List<Trade> existTrades, Map<String, Integer> existPositions) {
+    public Trade addNewTrade(List<Stock> stocks, List<Trade> existTrades, Map<String, Integer> existPositions) {
         Scanner scanner = new Scanner(System.in);
         Validator validator = new Validator();
 
@@ -94,7 +97,7 @@ public class TradeListController {
     public List<Trade> readTradeFromCSV() {
         List<Trade> trades = new ArrayList<>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("TradeData.csv"));
+            BufferedReader reader = new BufferedReader(new FileReader("DataFile/TradeData.csv"));
             String line;
             boolean firstLine = true;
 

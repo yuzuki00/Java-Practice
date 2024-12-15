@@ -1,4 +1,4 @@
-package practice1;
+package practice1.Controller;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -12,7 +12,7 @@ public class MarketPriceController {
     public Map<String, BigDecimal> readMarketPriceFromCSV() {
         Map<String, BigDecimal> marketPriceData = new HashMap<>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("MarketPriceData.csv"));
+            BufferedReader reader = new BufferedReader(new FileReader("DataFile/MarketPriceData.csv"));
             String line;
             boolean firstLine = true;
 

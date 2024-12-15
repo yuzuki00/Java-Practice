@@ -1,4 +1,4 @@
-package practice1;
+package practice1.Model;
 
 public enum Market {
     PRIME,

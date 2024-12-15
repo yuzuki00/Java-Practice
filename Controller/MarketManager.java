@@ -1,4 +1,6 @@
-package practice1;
+package practice1.Controller;
+
+import practice1.Model.Market;
 
 public class MarketManager {
     public Market parseStringToMarket(String market) throws IllegalStateException {

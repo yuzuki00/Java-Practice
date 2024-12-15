@@ -1,4 +1,4 @@
-package practice1;
+package practice1.Model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

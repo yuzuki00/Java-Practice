@@ -1,4 +1,8 @@
-package practice1;
+package practice1.Controller;
+
+import practice1.Model.Position;
+import practice1.Model.Stock;
+import practice1.Model.Trade;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

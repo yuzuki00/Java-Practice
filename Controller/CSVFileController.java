@@ -1,4 +1,7 @@
-package practice1;
+package practice1.Controller;
+
+import practice1.Model.Stock;
+import practice1.Model.Trade;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -10,7 +13,7 @@ public class CSVFileController {
     public void addStockToCSV(Stock newStock) {
         MarketManager marketManager = new MarketManager();
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("StockData.csv", true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("DataFile/StockData.csv", true));
             writer.newLine();
             writer.append(String.format("%s,%s,%s,%d",
                     newStock.getTicker(),
@@ -27,7 +30,7 @@ public class CSVFileController {
     }
     public void addTradeToCSV(Trade newTrade) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("TradeData.csv", true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("DataFile/TradeData.csv", true));
             writer.newLine();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
             writer.append(String.format("%s,%s,%s,%s,%s,%s",

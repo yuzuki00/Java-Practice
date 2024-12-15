@@ -1,4 +1,6 @@
-package practice1;
+package practice1.Controller;
+
+import practice1.Viewer.Viewer;
 
 import java.util.Scanner;
 

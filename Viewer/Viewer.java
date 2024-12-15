@@ -1,4 +1,9 @@
-package practice1;
+package practice1.Viewer;
+
+import practice1.Controller.MarketManager;
+import practice1.Model.Position;
+import practice1.Model.Stock;
+import practice1.Model.Trade;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -77,44 +82,15 @@ public class Viewer {
         }
     }
 
-//    public void displayPositionList(Map<String, Integer> positions, List<Stock> stocks) {
-//        //銘柄コードでソート
-//        List<String>  sortedTickers;
-//        sortedTickers = positions.keySet().stream().sorted().toList();
-//
-//        System.out.printf("%-10s %-20s %10s%n", "銘柄コード", "銘柄名", "保有数量");
-//        System.out.println("------------------------------------------------------");
-//
-//        // 保有ポジションを出力
-//        for (String ticker : sortedTickers) {
-//            String stockName = null;
-//            //銘柄コードに応じた銘柄名の取得
-//            for (Stock stock :stocks)
-//                if (stock.getTicker().equals(ticker)) {
-//                    stockName = stock.getName();
-//                    if (stockName.length()>20) {
-//                        stockName = stockName.substring(0,17) + "...";
-//                    }
-//                    break;
-//                }
-//
-//            //保有数量の取得
-//            int quantity = positions.get(ticker);
-//            String formattedQuantity = NumberFormat.getNumberInstance().format(quantity);
-//
-//            System.out.printf("%-10s %-20s %10s%n", ticker, stockName, formattedQuantity);
-//        }
-//    }
-
-    public void displayPositionData(List<Position> positions,List<Stock> stocks) {
+    public void displayPositionData(List<Position> positions, List<Stock> stocks) {
         if (positions.isEmpty()) {
             System.out.println("データが存在しません");
         } else {
             //ポジションデータを銘柄コードでソート
             positions.sort(Comparator.comparing(Position::getTicker));
 
-            String format = "| %-5s | %-20s | %-5s | %15s | %18s | %-18s | %10s | \n";
-            System.out.println("|" + "=".repeat(111) + "|");
+            String format = "| %6s | %-20s | %10s | %25s | %25s | %15s | %25s | \n";
+            System.out.println("|" + "=".repeat(146) + "|");
             System.out.printf(format,
                     "Ticker",
                     "Product Name",
@@ -123,7 +99,9 @@ public class Viewer {
                     "Realized Profit and Loss",
                     "Valuation",
                     "Unrealized Profit and Loss");
-            System.out.println("|" + "=".repeat(111) + "|");
+            System.out.println("|" + "=".repeat(146) + "|");
+
+            DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 
             for (Position position:positions) {
                 String name= "";
@@ -143,20 +121,20 @@ public class Viewer {
                     valuation = "N/A";
                     unrealizedProfitAndLoss = "N/A";
                 } else {
-                    valuation = position.getValuation().toString();
-                    unrealizedProfitAndLoss = position.getUnrealizeProfitAndLoss().toString();
+                    valuation = decimalFormat.format(position.getValuation());
+                    unrealizedProfitAndLoss = decimalFormat.format(position.getUnrealizeProfitAndLoss());
                 }
 
                 System.out.printf(format,
-                        position.getTicker(),
+                        " " + position.getTicker()+ " ",
                         name,
-                        position.getQuantity(),
-                        position.getAverageUnitPrice(),
-                        position.getRealizeProfitAndLoss(),
+                        NumberFormat.getNumberInstance().format(position.getQuantity()),
+                        decimalFormat.format(position.getAverageUnitPrice()),
+                        decimalFormat.format(position.getRealizeProfitAndLoss()),
                         valuation,
                         unrealizedProfitAndLoss);
             }
-            System.out.println("|" + "=".repeat(111) + "|");
+            System.out.println("|" + "=".repeat(146) + "|");
         }
     }
 }
