@@ -25,7 +25,7 @@ public class MarketPrice {
                 String[] values = line.split(",");
 
                 if (values.length != 2) {
-                    System.out.println("husei");
+                    System.out.println("不正な行がありました。1行スキップします");
                     continue;
                 }
 

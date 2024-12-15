@@ -75,14 +75,14 @@ public class Validator {
         return true;
     }
 
-    public boolean validSide(String ticker, String side, Map<String, Integer> positions) {
+    public boolean validSide(String ticker, String side, Map<String, Integer> ownPositionData) {
         if (!side.equals("BUY") && !side.equals("SELL")) {
             System.out.println("売買区分はBUYもしくはSELLを入力して下さい");
             return false;
         }
 
         if (side.equals("SELL")) {
-            if (positions.get(ticker) == 0) {
+            if (ownPositionData.get(ticker) == 0) {
                 System.out.println("保有していないため取引できません");
                 return false;
             }
@@ -92,7 +92,7 @@ public class Validator {
         return true;
     }
 
-    public boolean validQuantity(String ticker, String inputQuantity, String side, Map<String, Integer> positions) {
+    public boolean validQuantity(String ticker, String inputQuantity, String side, Map<String, Integer> ownPositionData) {
         int quantity;
         try {
             quantity = Integer.parseInt(inputQuantity);
@@ -112,7 +112,7 @@ public class Validator {
         }
 
         //保有ポジション情報を用いた取引の制限
-        if ((positions.get(ticker) + (side.equals("BUY") ? Integer.parseInt(inputQuantity) : -Integer.parseInt(inputQuantity))) < 0) {
+        if ((ownPositionData.get(ticker) + (side.equals("BUY") ? Integer.parseInt(inputQuantity) : -Integer.parseInt(inputQuantity))) < 0) {
             System.out.println("保有数量が負の値となるため、不正な取引です");
             return false;
         }
