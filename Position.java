@@ -40,6 +40,6 @@ public class Position {
     }
 
     public BigDecimal getUnrealizeProfitAndLoss() {
-        return realizeProfitAndLoss;
+        return unrealizeProfitAndLoss;
     }
 }

@@ -33,12 +33,12 @@ public class PositionController {
     public Map<String, BigDecimal> calculateAverageUnitPrice(List<Trade> trades, List<Stock> stocks) {
 
         //銘柄コードごとに取引データをグルーピング
-        Map<String, List<Trade>> sortedTradeByTicker = groupingTradeByTicker(trades, stocks);
+        Map<String, List<Trade>> groupedTradeByTicker = groupingTradeByTicker(trades, stocks);
 
         Map<String, BigDecimal> tickerAndAveragePrice = new HashMap<>();
 
-        for (String ticker : sortedTradeByTicker.keySet()) {
-            List<Trade> tickerWithTradeData = sortedTradeByTicker.get(ticker);
+        for (String ticker : groupedTradeByTicker.keySet()) {
+            List<Trade> tickerWithTradeData = groupedTradeByTicker.get(ticker);
 
             int totalQuantity = 0;
             BigDecimal totalTradeUnitPrice = BigDecimal.ZERO;
@@ -50,8 +50,8 @@ public class PositionController {
                 }
             }
 
-            BigDecimal averageTradeUnitPrice = totalTradeUnitPrice.divide(
-                    new BigDecimal(totalQuantity), 2, RoundingMode.HALF_UP);
+            BigDecimal averageTradeUnitPrice = totalTradeUnitPrice.
+                    divide(new BigDecimal(totalQuantity), 2, RoundingMode.HALF_UP);
             tickerAndAveragePrice.put(ticker, averageTradeUnitPrice);
         }
         return tickerAndAveragePrice;
@@ -69,7 +69,8 @@ public class PositionController {
                 int quantity = trade.getSide().equals("BUY") ? trade.getQuantity() : -trade.getQuantity();
                 BigDecimal realizedProfitAndLoss = trade.getTradedUnitPrice().multiply(new BigDecimal(quantity));
 
-                tickerAndRealizedProfitAndLoss.put(ticker, tickerAndRealizedProfitAndLoss.getOrDefault(ticker, BigDecimal.ZERO).add(realizedProfitAndLoss));
+                tickerAndRealizedProfitAndLoss.put(ticker,
+                        tickerAndRealizedProfitAndLoss.getOrDefault(ticker, BigDecimal.ZERO).add(realizedProfitAndLoss).setScale(2, RoundingMode.HALF_UP));
             }
         }
         return tickerAndRealizedProfitAndLoss;
@@ -82,7 +83,7 @@ public class PositionController {
         Map<String, BigDecimal> acquisitionCostMap = new HashMap<>();
 
         for (String ticker : ownPositionMap.keySet()) {
-            BigDecimal  ownPosition = new BigDecimal(ownPositionMap.get(ticker));
+            BigDecimal ownPosition = new BigDecimal(ownPositionMap.get(ticker));
             BigDecimal acquisitionCost = ownPosition.multiply(averageUnitPriceMap.get(ticker));
             acquisitionCostMap.put(ticker, acquisitionCost);
         }
@@ -90,40 +91,51 @@ public class PositionController {
         return acquisitionCostMap;
     }
 
-    //評価損益計算メソッド
-    public Map<String, BigDecimal> calculateValuation (List<Trade> trades, List<Stock> stocks) {
+    //評価額計算メソッド
+    public Map<String, BigDecimal> calculateValuation(List<Trade> trades, List<Stock> stocks) {
         MarketPriceController marketPriceController = new MarketPriceController();
         Map<String, BigDecimal> valuationData = new HashMap<>();
         Map<String, Integer> ownPostionMap = calculateOwnPosition(trades, stocks);
         Map<String, BigDecimal> marketPriceData = marketPriceController.readMarketPriceFromCSV();
 
-        for (String ticker:ownPostionMap.keySet()) {
-            BigDecimal ownPosition = new BigDecimal(ownPostionMap.get(ticker));
-            BigDecimal valuation = ownPosition.multiply(marketPriceData.get(ticker));
-            valuationData.put(ticker, valuation);
+        for (String ticker : ownPostionMap.keySet()) {
+            if (marketPriceData.containsKey(ticker)) {
+                BigDecimal ownPosition = new BigDecimal(ownPostionMap.get(ticker));
+                BigDecimal valuation = ownPosition.multiply(marketPriceData.get(ticker)).setScale(2, RoundingMode.HALF_UP);
+                valuationData.put(ticker, valuation);
+            } else {
+                valuationData.put(ticker, null);
+            }
         }
         return valuationData;
     }
 
     //評価損益計算メソッド
-    public Map<String, BigDecimal> calculateUnrealizedProfitAndLoss (List<Trade> trades, List<Stock> stocks) {
+    public Map<String, BigDecimal> calculateUnrealizedProfitAndLoss(List<Trade> trades, List<Stock> stocks) {
         Map<String, BigDecimal> unrealizeProfitAndLossData = new HashMap<>();
         Map<String, BigDecimal> acquisitionCostData = calculateAcquisitionCost(trades, stocks);
         Map<String, BigDecimal> valuationData = calculateValuation(trades, stocks);
 
-        for (String ticker:acquisitionCostData.keySet()) {
-            unrealizeProfitAndLossData.put(ticker,valuationData.get(ticker).subtract(acquisitionCostData.get(ticker)));
+        for (String ticker : acquisitionCostData.keySet()) {
+            BigDecimal valuation = valuationData.get(ticker);
+            if (valuation== null) {
+                unrealizeProfitAndLossData.put(ticker, null);
+            } else {
+                BigDecimal acquisitionCost = acquisitionCostData.get(ticker);
+                BigDecimal unrealizedProfitAndLoss = valuationData.get(ticker).subtract(acquisitionCost).setScale(2, RoundingMode.HALF_UP);
+                unrealizeProfitAndLossData.put(ticker, unrealizedProfitAndLoss);
+            }
         }
 
         return unrealizeProfitAndLossData;
     }
 
     //List<Positoin>型のデータを返すメソッド
-    public List<Position> positionList (List<Trade> trades, List<Stock> stocks) {
+    public List<Position> positionList(List<Trade> trades, List<Stock> stocks) {
         Map<String, Integer> ownPositionData = calculateOwnPosition(trades, stocks);
         Map<String, BigDecimal> averageUnitPriceData = calculateAverageUnitPrice(trades, stocks);
-        Map<String,BigDecimal> realizeProfitAndLoss = calculateRealizedProfitAndLoss(trades,stocks);
-        Map<String,BigDecimal> valuationData = calculateValuation(trades, stocks);
+        Map<String, BigDecimal> realizeProfitAndLoss = calculateRealizedProfitAndLoss(trades, stocks);
+        Map<String, BigDecimal> valuationData = calculateValuation(trades, stocks);
         Map<String, BigDecimal> unrealizedProfitAndLossData = calculateUnrealizedProfitAndLoss(trades, stocks);
 
         List<Position> positions = new ArrayList<>();
@@ -143,14 +155,14 @@ public class PositionController {
     private Map<String, List<Trade>> groupingTradeByTicker(List<Trade> trades, List<Stock> stocks) {
         Map<String, List<Trade>> sortedTradeByTicker = new HashMap<>();
         for (Trade trade : trades) {
-            String ticker = linkTickerAndName(trade.getName(), stocks);
+            String ticker = linkTickerFromName(trade.getName(), stocks);
             sortedTradeByTicker.computeIfAbsent(ticker, k -> new ArrayList<>()).add(trade);
         }
         return sortedTradeByTicker;
     }
 
     //銘柄名と銘柄コードを紐づけるメソッド
-    private String linkTickerAndName(String name, List<Stock> stocks) {
+    private String linkTickerFromName(String name, List<Stock> stocks) {
         String ticker;
         for (Stock stock : stocks) {
             if (name.equals(stock.getName())) {

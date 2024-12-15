@@ -108,26 +108,55 @@ public class Viewer {
         }
     }
 
-    public void displayPositionData(List<Position> positions) {
+    public void displayPositionData(List<Position> positions,List<Stock> stocks) {
         if (positions.isEmpty()) {
             System.out.println("データが存在しません");
         } else {
             //ポジションデータを銘柄コードでソート
             positions.sort(Comparator.comparing(Position::getTicker));
 
-            String format = "| %-18s | %-20s | %-5s | %15s | %18s | %-18s | \n";
+            String format = "| %-5s | %-20s | %-5s | %15s | %18s | %-18s | %10s | \n";
             System.out.println("|" + "=".repeat(111) + "|");
-            System.out.printf(format, "Trade DateTime", "Product Name", "Side", "Quantity", "Trade Unit Price", "Input DateTime");
+            System.out.printf(format,
+                    "Ticker",
+                    "Product Name",
+                    "Quantity",
+                    "Average Unit Price",
+                    "Realized Profit and Loss",
+                    "Valuation",
+                    "Unrealized Profit and Loss");
             System.out.println("|" + "=".repeat(111) + "|");
 
             for (Position position:positions) {
+                String name= "";
+                for (Stock stock: stocks) {
+                    if (stock.getTicker().equals(position.getTicker())) {
+                        name = stock.getName();
+                        if (name.length()>20) {
+                            name = name.substring(0,17) + "...";
+                        }
+                        break;
+                    }
+                }
+
+                String unrealizedProfitAndLoss;
+                String valuation;
+                if (position.getValuation() == null) {
+                    valuation = "N/A";
+                    unrealizedProfitAndLoss = "N/A";
+                } else {
+                    valuation = position.getValuation().toString();
+                    unrealizedProfitAndLoss = position.getUnrealizeProfitAndLoss().toString();
+                }
+
                 System.out.printf(format,
                         position.getTicker(),
+                        name,
                         position.getQuantity(),
                         position.getAverageUnitPrice(),
                         position.getRealizeProfitAndLoss(),
-                        position.getValuation(),
-                        position.getUnrealizeProfitAndLoss());
+                        valuation,
+                        unrealizedProfitAndLoss);
             }
             System.out.println("|" + "=".repeat(111) + "|");
         }

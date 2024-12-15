@@ -57,7 +57,7 @@ public class TradeMain {
                     List<Stock> stocks = stockListController.readStocksFromCSV();
                     List<Trade> trades = tradeListController.readTradeFromCSV();
                     List<Position> positions = positionController.positionList(trades,stocks);
-                    viewer.displayPositionData(positions);
+                    viewer.displayPositionData(positions,stocks);
                     System.out.println();
                 }
                 default -> System.out.println("\"" + selectedMenu + "\"に対応するメニューは存在しません。\n");
