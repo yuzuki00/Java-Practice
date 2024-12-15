@@ -2,22 +2,12 @@ package practice1;
 
 
 import practice1.Controller.*;
-import practice1.Model.Position;
-import practice1.Model.Stock;
-import practice1.Model.Trade;
 import practice1.Viewer.Viewer;
-
-import java.util.List;
-import java.util.Map;
 
 public class TradeMain {
     public static void main(String[] args) {
         Application application = new Application();
-        Viewer viewer = new Viewer();
-        StockListController stockListController = new StockListController();
-        TradeListController tradeListController = new TradeListController();
-        CSVFileController csvFileController = new CSVFileController();
-        PositionController positionController = new PositionController();
+
         System.out.println("株式取引管理システムを開始します。");
         while (true) {
             String selectedMenu = application.selectMenu();
@@ -28,42 +18,23 @@ public class TradeMain {
 
             switch (selectedMenu) {
                 case "1" -> {
-                    System.out.println("銘柄マスタを表示します");
-
-                    List<Stock> stocks = stockListController.readStocksFromCSV();
-                    viewer.displayStockList(stocks);
-
+                    application.displayStock();
                     System.out.println();
-
                 }
                 case "2" -> {
-                    System.out.println("銘柄マスタ新規登録");
-                    List<Stock> stocks = stockListController.readStocksFromCSV();
-                    Stock newStock = stockListController.addNewStock(stocks);
-                    csvFileController.addStockToCSV(newStock);
+                    application.registerNewStock();
                     System.out.println();
                 }
                 case "3" -> {
-                    System.out.println("新規取引入力");
-                    List<Stock> stocks = stockListController.readStocksFromCSV();
-                    List<Trade> existTrades = tradeListController.readTradeFromCSV();
-                    Map<String, Integer> existPositions = positionController.calculateOwnPosition(existTrades,stocks);
-                    Trade newTrade = tradeListController.addNewTrade(stocks,existTrades, existPositions);
-                    csvFileController.addTradeToCSV(newTrade);
+                    application.registerNewTrade();
                     System.out.println();
                 }
                 case "4" -> {
-                    System.out.println("取引一覧表示");
-                    List<Trade> trades = tradeListController.readTradeFromCSV();
-                    viewer.displayTradeList(trades);
+                    application.displayTrade();
                     System.out.println();
                 }
                 case "5" -> {
-                    System.out.println("保有ポジション表示");
-                    List<Stock> stocks = stockListController.readStocksFromCSV();
-                    List<Trade> trades = tradeListController.readTradeFromCSV();
-                    List<Position> positions = positionController.positionList(trades,stocks);
-                    viewer.displayPositionData(positions,stocks);
+                    application.displayPosition();
                     System.out.println();
                 }
                 default -> System.out.println("\"" + selectedMenu + "\"に対応するメニューは存在しません。\n");

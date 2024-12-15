@@ -158,12 +158,12 @@ public class PositionController {
 
     //銘柄コードごとに取引データをグルーピングするprivateメソッド
     private Map<String, List<Trade>> groupingTradeByTicker(List<Trade> trades, List<Stock> stocks) {
-        Map<String, List<Trade>> sortedTradeByTicker = new HashMap<>();
+        Map<String, List<Trade>> groupedTradeByTicker = new HashMap<>();
         for (Trade trade : trades) {
             String ticker = linkTickerFromName(trade.getName(), stocks);
-            sortedTradeByTicker.computeIfAbsent(ticker, k -> new ArrayList<>()).add(trade);
+            groupedTradeByTicker.computeIfAbsent(ticker, k -> new ArrayList<>()).add(trade);
         }
-        return sortedTradeByTicker;
+        return groupedTradeByTicker;
     }
 
     //銘柄名と銘柄コードを紐づけるメソッド
