@@ -153,7 +153,7 @@ public class PositionController {
     private String linkTickerAndName(String name, List<Stock> stocks) {
         String ticker;
         for (Stock stock : stocks) {
-            if (name.equals(stock.getTicker())) {
+            if (name.equals(stock.getName())) {
                 ticker = stock.getTicker();
                 return ticker;
             }

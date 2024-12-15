@@ -108,18 +108,29 @@ public class Viewer {
         }
     }
 
-    public void displayPositionData(List<Trade> trades, List<Stock> stocks,List<Position> positions) {
-        PositionController positionController = new PositionController();
-        Map<String, Integer> ownPositionData = positionController.calculateOwnPosition(trades, stocks);
-        Map<String, BigDecimal> averageUnitPriceData = positionController.calculateAverageUnitPrice(trades, stocks);
-        Map<String,BigDecimal> realizeProfitAndLoss = positionController.calculateRealizedProfitAndLoss(trades,stocks);
-        Map<String,BigDecimal> valuationData = positionController.calculateValuation(trades, stocks);
-        Map<String, BigDecimal> unrealizedProfitAndLoss = positionController.calculateUnrealizedProfitAndLoss(trades, stocks);
-
+    public void displayPositionData(List<Position> positions) {
         if (positions.isEmpty()) {
             System.out.println("データが存在しません");
-        }
+        } else {
+            //ポジションデータを銘柄コードでソート
+            positions.sort(Comparator.comparing(Position::getTicker));
 
+            String format = "| %-18s | %-20s | %-5s | %15s | %18s | %-18s | \n";
+            System.out.println("|" + "=".repeat(111) + "|");
+            System.out.printf(format, "Trade DateTime", "Product Name", "Side", "Quantity", "Trade Unit Price", "Input DateTime");
+            System.out.println("|" + "=".repeat(111) + "|");
+
+            for (Position position:positions) {
+                System.out.printf(format,
+                        position.getTicker(),
+                        position.getQuantity(),
+                        position.getAverageUnitPrice(),
+                        position.getRealizeProfitAndLoss(),
+                        position.getValuation(),
+                        position.getUnrealizeProfitAndLoss());
+            }
+            System.out.println("|" + "=".repeat(111) + "|");
+        }
     }
 }
 

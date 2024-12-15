@@ -5,3 +5,4 @@ traded_datetime,product_name,side,quantity,traded_unit_price,input_datetime
 2024/12/10 12:00,apple,BUY,500,100.00,2024/12/11 13:41
 2024/12/12 10:00,Keyence Corp.,BUY,400,500.00,2024/12/12 17:25
 2024/12/12 11:00,apple,SELL,400,30000.00,2024/12/12 17:26
+2024/12/12 13:00,apple,BUY,1000,1000.00,2024/12/12 19:47

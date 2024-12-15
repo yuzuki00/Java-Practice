@@ -11,7 +11,7 @@ public class TradeMain {
         StockListController stockListController = new StockListController();
         TradeListController tradeListController = new TradeListController();
         CSVFileController csvFileController = new CSVFileController();
-        PositionController positionManger = new PositionController();
+        PositionController positionController = new PositionController();
         System.out.println("株式取引管理システムを開始します。");
         while (true) {
             String selectedMenu = application.selectMenu();
@@ -41,7 +41,7 @@ public class TradeMain {
                     System.out.println("新規取引入力");
                     List<Stock> stocks = stockListController.readStocksFromCSV();
                     List<Trade> existTrades = tradeListController.readTradeFromCSV();
-                    Map<String, Integer> existPositions = positionManger.calculateOwnPosition(existTrades,stocks);
+                    Map<String, Integer> existPositions = positionController.calculateOwnPosition(existTrades,stocks);
                     Trade newTrade = tradeListController.addNewTrade(stocks,existTrades, existPositions);
                     csvFileController.addTradeToCSV(newTrade);
                     System.out.println();
@@ -56,8 +56,8 @@ public class TradeMain {
                     System.out.println("保有ポジション表示");
                     List<Stock> stocks = stockListController.readStocksFromCSV();
                     List<Trade> trades = tradeListController.readTradeFromCSV();
-                    Map<String, Integer> positions = positionManger.calculateOwnPosition(trades, stocks);
-                    viewer.displayPositionList(positions,stocks);
+                    List<Position> positions = positionController.positionList(trades,stocks);
+                    viewer.displayPositionData(positions);
                     System.out.println();
                 }
                 default -> System.out.println("\"" + selectedMenu + "\"に対応するメニューは存在しません。\n");
