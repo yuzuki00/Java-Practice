@@ -3,12 +3,12 @@ package practice1.Model;
 import java.math.BigDecimal;
 
 public class Position {
-    String ticker;
-    int quantity;
-    BigDecimal averageUnitPrice;
-    BigDecimal realizeProfitAndLoss;
-    BigDecimal valuation;
-    BigDecimal unrealizeProfitAndLoss;
+    private final String ticker;
+    private final int quantity;
+    private final BigDecimal averageUnitPrice;
+    private final BigDecimal realizeProfitAndLoss;
+    private final BigDecimal valuation;
+    private final BigDecimal unrealizeProfitAndLoss;
 
     public Position(String ticker, int quantity, BigDecimal averageUnitPrice, BigDecimal realizeProfitAndLoss, BigDecimal valuation, BigDecimal unrealizeProfitAndLoss) {
         this.ticker = ticker;
