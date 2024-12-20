@@ -14,10 +14,16 @@ import java.util.Map;
 
 
 public class PositionController {
-    //保有ポジション計算（Ticker, 保有数）
+    /**
+     * 保有数量を計算する。
+     *
+     * @param trades　これまでの取引データ
+     * @param stocks　株式銘柄マスタデータ
+     * @return 銘柄コードと保有数量のMap
+     */
     public Map<String, Integer> calculateOwnPosition(List<Trade> trades, List<Stock> stocks) {
         //保有ポジションの計算
-        Map<String, Integer> positions = new HashMap<>();
+        Map<String, Integer> ownPositionData = new HashMap<>();
         for (Trade trade : trades) {
             int ownQuantity = trade.getSide().equals("BUY") ? trade.getQuantity() : -trade.getQuantity();
             String ownTicker = null;
@@ -28,10 +34,10 @@ public class PositionController {
                     break;
                 }
             }
-            positions.put(ownTicker, positions.getOrDefault(ownTicker, 0) + ownQuantity);
+            ownPositionData.put(ownTicker, ownPositionData.getOrDefault(ownTicker, 0) + ownQuantity);
         }
 
-        return positions;
+        return ownPositionData;
     }
 
     //銘柄コードと平均取得単価の組み合わせのMapを返すメソッド
@@ -40,7 +46,7 @@ public class PositionController {
         //銘柄コードごとに取引データをグルーピング
         Map<String, List<Trade>> groupedTradeByTicker = groupingTradeByTicker(trades, stocks);
 
-        Map<String, BigDecimal> tickerAndAveragePrice = new HashMap<>();
+        Map<String, BigDecimal> averageUnitPriceData = new HashMap<>();
 
         for (String ticker : groupedTradeByTicker.keySet()) {
             List<Trade> tickerWithTradeData = groupedTradeByTicker.get(ticker);
@@ -57,9 +63,9 @@ public class PositionController {
 
             BigDecimal averageTradeUnitPrice = totalTradeUnitPrice.
                     divide(new BigDecimal(totalQuantity), 2, RoundingMode.HALF_UP);
-            tickerAndAveragePrice.put(ticker, averageTradeUnitPrice);
+            averageUnitPriceData.put(ticker, averageTradeUnitPrice);
         }
-        return tickerAndAveragePrice;
+        return averageUnitPriceData;
     }
 
     //損益額を計算し、銘柄コードと組み合わせて出力するメソッド
@@ -71,7 +77,7 @@ public class PositionController {
             List<Trade> tickerWithTradeData = groupedTradeByTicker.get(ticker);
 
             for (Trade trade : tickerWithTradeData) {
-                int quantity = trade.getSide().equals("BUY") ? trade.getQuantity() : -trade.getQuantity();
+                int quantity = trade.getSide().equals("SELL") ? trade.getQuantity() : -trade.getQuantity();
                 BigDecimal realizedProfitAndLoss = trade.getTradedUnitPrice().multiply(new BigDecimal(quantity));
 
                 tickerAndRealizedProfitAndLoss.put(ticker,
@@ -135,7 +141,7 @@ public class PositionController {
         return unrealizeProfitAndLossData;
     }
 
-    //List<Positoin>型のデータを返すメソッド
+    //List<Position>型のデータを返すメソッド
     public List<Position> positionList(List<Trade> trades, List<Stock> stocks) {
         Map<String, Integer> ownPositionData = calculateOwnPosition(trades, stocks);
         Map<String, BigDecimal> averageUnitPriceData = calculateAverageUnitPrice(trades, stocks);

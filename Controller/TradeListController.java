@@ -87,9 +87,7 @@ public class TradeListController {
 
         LocalDateTime inputDateTime = LocalDateTime.now();
 
-        Trade newTrade = new Trade(confirmedTradeDateTime, confirmedName, confirmedSide, confirmedQuantity, tradeUnitPrice, inputDateTime);
-
-        return newTrade;
+        return new Trade(confirmedTradeDateTime, confirmedName, confirmedSide, confirmedQuantity, tradeUnitPrice, inputDateTime);
     }
 
     public List<Trade> readTradeFromCSV() {

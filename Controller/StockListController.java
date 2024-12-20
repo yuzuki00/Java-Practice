@@ -16,7 +16,7 @@ public class StockListController {
         List<Stock> stocks = new ArrayList<>();
         MarketManager marketManager = new MarketManager();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("DataFile/StockData.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/practice1/DataFile/StockData.csv"))) {
             String line;
             boolean isFirstLine = true;
 

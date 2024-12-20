@@ -12,6 +12,12 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Viewer {
+    final TableBuilder tableBuilder;
+
+    public Viewer(){
+        this.tableBuilder = new TableBuilder();
+    }
+
     public void displayMenu() {
         System.out.println("""
                 操作するメニューを選んでください。
@@ -46,6 +52,25 @@ public class Viewer {
                     String.format("%,d", stock.getSharesIssued()));
         }
         System.out.println("|" + "=".repeat(64) + "|");
+    }
+
+    public void showStock(List<Stock> stocks) {
+        MarketManager marketManager = new MarketManager();
+        tableBuilder.withColumn("Ticker", 10);
+        tableBuilder.withColumn("ProductName", 20);
+        tableBuilder.withColumn("Market", 10);
+        tableBuilder.withColumn("SharesIssued", 15, true);
+
+        for (Stock stock : stocks ){
+            String stockName = stock.getName();
+            if (stockName.length() > 20) {
+                stockName = stockName.substring(0,17) + "...";
+            }
+
+            tableBuilder.addRow(stock.getTicker(),stockName,marketManager.parseMarket(stock.getMarket()),String.format("%,d",stock.getSharesIssued()));
+        }
+
+        tableBuilder.build();
     }
 
     public void displayTradeList(List<Trade> trades) {
